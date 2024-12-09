@@ -1,0 +1,15 @@
+/Users/hanab/Projects/program-4-hbadr2.git/program-4-hbadr2.git/bin/Debug/net6.0/program-4-hbadr2.git
+/Users/hanab/Projects/program-4-hbadr2.git/program-4-hbadr2.git/bin/Debug/net6.0/program-4-hbadr2.git.deps.json
+/Users/hanab/Projects/program-4-hbadr2.git/program-4-hbadr2.git/bin/Debug/net6.0/program-4-hbadr2.git.runtimeconfig.json
+/Users/hanab/Projects/program-4-hbadr2.git/program-4-hbadr2.git/bin/Debug/net6.0/program-4-hbadr2.git.dll
+/Users/hanab/Projects/program-4-hbadr2.git/program-4-hbadr2.git/bin/Debug/net6.0/program-4-hbadr2.git.pdb
+/Users/hanab/Projects/program-4-hbadr2.git/program-4-hbadr2.git/obj/Debug/net6.0/program-4-hbadr2.git.csproj.AssemblyReference.cache
+/Users/hanab/Projects/program-4-hbadr2.git/program-4-hbadr2.git/obj/Debug/net6.0/program-4-hbadr2.git.GeneratedMSBuildEditorConfig.editorconfig
+/Users/hanab/Projects/program-4-hbadr2.git/program-4-hbadr2.git/obj/Debug/net6.0/program-4-hbadr2.git.AssemblyInfoInputs.cache
+/Users/hanab/Projects/program-4-hbadr2.git/program-4-hbadr2.git/obj/Debug/net6.0/program-4-hbadr2.git.AssemblyInfo.cs
+/Users/hanab/Projects/program-4-hbadr2.git/program-4-hbadr2.git/obj/Debug/net6.0/program-4-hbadr2.git.csproj.CoreCompileInputs.cache
+/Users/hanab/Projects/program-4-hbadr2.git/program-4-hbadr2.git/obj/Debug/net6.0/program-4-hbadr2.git.dll
+/Users/hanab/Projects/program-4-hbadr2.git/program-4-hbadr2.git/obj/Debug/net6.0/refint/program-4-hbadr2.git.dll
+/Users/hanab/Projects/program-4-hbadr2.git/program-4-hbadr2.git/obj/Debug/net6.0/program-4-hbadr2.git.pdb
+/Users/hanab/Projects/program-4-hbadr2.git/program-4-hbadr2.git/obj/Debug/net6.0/program-4-hbadr2.git.genruntimeconfig.cache
+/Users/hanab/Projects/program-4-hbadr2.git/program-4-hbadr2.git/obj/Debug/net6.0/ref/program-4-hbadr2.git.dll

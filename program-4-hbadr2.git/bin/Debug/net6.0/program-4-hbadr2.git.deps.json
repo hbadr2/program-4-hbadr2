@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v6.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v6.0": {
+      "program-4-hbadr2.git/1.0.0": {
+        "runtime": {
+          "program-4-hbadr2.git.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "program-4-hbadr2.git/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
