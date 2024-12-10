@@ -26,7 +26,7 @@ int  main() {
     string name;
     string message;
 
-    while (isRunning = true) {
+    while (isRunning) {
         displayMainMenu();
         cin >> choice;
 
@@ -39,7 +39,7 @@ int  main() {
             client.connectToServer("128.0.0.1", 80);
             cout << "You are now connected as " << name << "." << endl;
         
-        } else if (input == "2") {
+        } else if (choice == "2") {
             
             //send a message
             cout << "Enter your message: ";
@@ -48,7 +48,7 @@ int  main() {
             client.sendMessage(message);
             server.broadcastMessage(name + ": " + message, 0);
         
-        } else if (input == "3") {
+        } else if (choice == "3") {
 
             //exit program
             cout << "Thank you for using the chat room!" << endl;
