@@ -1,30 +1,35 @@
 ﻿#include "Client.h"
 
+Client::~Client() {
+    //empty destructor
+}
+
 Client::Client() {
     awaitingClient = -1;
 }
 
-Client::getAwaitingClient() {
+int Client::getAwaitingClient() {
     return awaitingClient;
 }
 
-Client::setAwaitingClient(int num) {
+void Client::setAwaitingClient(int num) {
     awaitingClient = num;
 }
 
-void Client::getName() {
+string Client::getName() {
     return name;
 }
 
-void Client::setName(string& name){
+void Client::setName(const string& name){
     this->name = name;
 }
 
-bool Client::connecttoServer(string& serverAddress, int port) {
+bool Client::connectToServer(const string& serverAddress, int port) {
     cout << "Connecting to server ..." << endl;
+    return true;
 }
 
-void Client::sendMessage(string& message) {
+void Client::sendMessage(const string& message) {
     cout << "Your message: " << message << "was sent successfully!" << endl;
 }
 

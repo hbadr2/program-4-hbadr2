@@ -1,37 +1,32 @@
 ﻿#ifndef CLIENT_H
 #define CLIENT_H
-#include <iostream>
 
-//using System;
-//namespace program_4_hbadr2.git
+#include <iostream>
+#include <string>
+
 using namespace std;
 
 class Client {
-
 private:
-
 	int awaitingClient;
 	string name;
 
-	//void receiveMessage();
-	//void handleServerDisconnection();
-
 public:
-
 	//constructor
 	Client();
+	~Client();
 
 	//getters and setters
-	int getAwaitingClient();
+	int getAwaitingClient() const;
 
-	void setAwaitingClient();
+	void setAwaitingClient(int num);
 
-	string getName();
+	string getName() const;
 
-	void setName(string& name);
+	void setName(const string& name);
 
 	//connecting and disconnecting to/from the server
-	boolean connectToServer (const string& serverAddress, int port);
+	bool connectToServer (const string& serverAddress, int port);
 
 	void disconnect();
 
@@ -39,6 +34,6 @@ public:
 	void sendMessage(const string& message);
 
 	void receiveMessages();
-}
+};
 
 #endif
