@@ -5,7 +5,7 @@ Client::~Client() {
 }
 
 Client::Client() {
-    awaitingClients = -1;
+    awaitingClient = -1;
 }
 
 int Client::getAwaitingClient() const {
