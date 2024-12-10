@@ -14,7 +14,7 @@ void displayMainMenu() {
 }
 
 int  main() {
-    cout << "The chat room is currently open ..." << endl;
+    cout << "\nThe chat room is currently open ..." << endl;
 
     Server server;
     Client client;
@@ -33,7 +33,7 @@ int  main() {
         if (choice == "1") {
             
             //connect client to the server
-            cout << "Enter your name: ";
+            cout << "\nEnter your name: ";
             cin >> name;
             client.setName(name);
             client.connectToServer("128.0.0.1", 80);
@@ -42,7 +42,7 @@ int  main() {
         } else if (choice == "2") {
             
             //send a message
-            cout << "Enter your message: ";
+            cout << "\nEnter your message: ";
             cin.ignore();
             getline(cin, message);
             client.sendMessage(message);
@@ -51,7 +51,7 @@ int  main() {
         } else if (choice == "3") {
 
             //exit program
-            cout << "/nThank you for using the chat room!" << endl;
+            cout << "\nThank you for using the chat room!" << endl;
             isRunning = false;
         
         } else {
