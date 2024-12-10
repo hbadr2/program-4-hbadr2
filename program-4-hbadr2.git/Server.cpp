@@ -23,7 +23,7 @@ void Server::setServer(int serverState) {
 }
 
 bool Server::startServer(int port) {
-    cout << "Server started on port " << port << endl;
+    cout << "\nServer started on port " << port << endl;
     s = 1;
     return true;
 }

@@ -3,13 +3,18 @@
 
 #include <iostream>
 #include <string>
+#include <thread>
+#include <netinet/in.h>
+#include <unistd.h>
 
 using namespace std;
 
 class Client {
 private:
-	int awaitingClient;
+	int clientSocket;
 	string name;
+
+	void receiveMessages();
 
 public:
 	//constructor
@@ -17,23 +22,23 @@ public:
 	~Client();
 
 	//getters and setters
-	int getAwaitingClient() const;
+	//int getAwaitingClient() const;
 
-	void setAwaitingClient(int num);
+	//void setAwaitingClient(int num);
 
-	string getName() const;
+	//string getName() const;
 
 	void setName(const string& name);
 
 	//connecting and disconnecting to/from the server
 	bool connectToServer (const string& serverAddress, int port);
 
-	void disconnect();
+	//void disconnect();
 
 	//sending/receiving messages
 	void sendMessage(const string& message);
 
-	void receiveMessages();
+	//void receiveMessages();
 };
 
 #endif

@@ -5,14 +5,23 @@
 #include <string>
 #include <map>
 #include <iostream>
+#include <thread>
+#include <mutex>
+#include <ctime>
+#include <netinet/in.h>
+#include <unistd.h>
 
 using namespace std;
 
 class Server {
 private:
-    int server;
-    vector<int> clientsAwaiting;
-    map <int, string> clientNames;
+    int serverSocket;
+    vector<int> clientsWaiting;
+    map<int, string> clientNames;
+    mutex clientMutex;
+    bool isRunning;
+
+    string getCurrentTimeStamp();
 
 public:
     
@@ -21,22 +30,23 @@ public:
    
    ~Server();
 
-    int getServer();
+    //int getServer();
 
-    void setServer(int s);
+    //void setServer(int s);
 
     bool startServer(int port);
 
     void stopServer();
 
-    void run();
+    //void run();
 
     void acceptConnections();
 
-    void broadcastMessage(const string& message, int s);
+    void broadcastMessage(const string& message, int senderSocket);
 
-    void handleDisconnection(int s);
-}
-;
+    //void handleDisconnection(int s);
+
+    void handleClient(int clientSocket);
+};
 
 #endif

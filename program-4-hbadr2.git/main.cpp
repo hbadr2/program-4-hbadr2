@@ -17,7 +17,17 @@ int  main() {
     cout << "\nThe chat room is currently open ..." << endl;
 
     Server server;
-    Client client;
+
+    thread serverThread(&Server::acceptConnections, &server);
+
+    if (!server.startServer(80)) {
+        return -1;
+    }
+
+    Client client1;
+    Client client2;
+
+    //client1.
 
     server.startServer(80);
 
