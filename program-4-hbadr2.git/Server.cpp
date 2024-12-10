@@ -6,7 +6,7 @@ Server::Server() {
 }
 
 Server::~Server() {
-    stopServer();
+    //stopServer();
 }
 
 int Server::getServer() {

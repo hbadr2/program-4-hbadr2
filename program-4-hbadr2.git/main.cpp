@@ -6,11 +6,11 @@
 using namespace std;
 
 void displayMainMenu() {
-    cout << "Wellcome to the client-server chat application!" << endl;
+    cout << "\nWelcome to the client-server chat application!" << endl;
     cout << "1. Connect to the Server" << endl;
     cout << "2. Send a message" << endl;
     cout << "3. Exit" << endl;
-    cout << "Choose an option (enter either 1, 2, or 3): "<< endl;
+    cout << "\nChoose an option (enter either 1, 2, or 3): "<< endl;
 }
 
 int  main() {
@@ -58,8 +58,7 @@ int  main() {
             cout << "Please try again and enter a valid choice. " << endl;
         }
     }
-
-    server.stopServer();
+    //server.stopServer();
     return 0;
 
     /*
