@@ -5,10 +5,10 @@ Client::~Client() {
 }
 
 Client::Client() {
-    awaitingClient = -1;
+    awaitingClients = -1;
 }
 
-int Client::getAwaitingClient() {
+int Client::getAwaitingClient() const {
     return awaitingClient;
 }
 
@@ -16,7 +16,7 @@ void Client::setAwaitingClient(int num) {
     awaitingClient = num;
 }
 
-string Client::getName() {
+string Client::getName() const {
     return name;
 }
 
@@ -25,7 +25,7 @@ void Client::setName(const string& name){
 }
 
 bool Client::connectToServer(const string& serverAddress, int port) {
-    cout << "Connecting to server ..." << endl;
+    cout << "Connecting to server at " << serverAddress << " on port " << port << endl;
     return true;
 }
 
