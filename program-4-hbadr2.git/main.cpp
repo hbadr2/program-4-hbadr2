@@ -5,14 +5,65 @@
 
 using namespace std;
 
+void displayMainMenu() {
+    cout << "Wellcome to the client-server chat application!" << endl;
+    cout << "1. Connect to the Server" << endl;
+    cout << "2. Send a message" << endl;
+    cout << "3. Exit" << endl;
+    cout << "Choose an option (enter either 1, 2, or 3): "<< endl;
+}
+
 int  main() {
-    cout << "Thank you for contacting us! Someone will be with you shortly!" << endl;
+    cout << "The chat room is currently open ..." << endl;
 
     Server server;
     Client client;
 
-    server.startServer(8080);
-    client.connectToServer("127.0.0.1", 8080);
+    server.startServer(80);
+
+    string choice;
+    bool isRunning = true;
+    string name;
+    string message;
+
+    while (isRunning = true) {
+        displayMainMenu();
+        cin >> choice;
+
+        if (choice == "1") {
+            
+            //connect client to the server
+            cout << "Enter your name: ";
+            cin >> name;
+            client.setName(name);
+            client.connectToServer("128.0.0.1", 80);
+            cout << "You are now connected as " << name << "." << endl;
+        
+        } else if (input == "2") {
+            
+            //send a message
+            cout << "Enter your message: ";
+            cin.ignore();
+            getline(cin, message);
+            client.sendMessage(message);
+            server.broadcastMessage(name + ": " + message, 0);
+        
+        } else if (input == "3") {
+
+            //exit program
+            cout << "Thank you for using the chat room!" << endl;
+            isRunning = false;
+        
+        } else {
+            cout << "Please try again and enter a valid choice. " << endl;
+        }
+    }
+
+    server.stopServer();
+    return 0;
+
+    /*
+    client.connectToServer("127.0.0.1", 80);
 
     client.setName("John Smith");
     client.sendMessage("Hello, everyone :)");
@@ -20,4 +71,5 @@ int  main() {
     server.broadcastMessage("John Smith: Hello everyone :) ", 0);
 
     return 0;
+    */
 }
