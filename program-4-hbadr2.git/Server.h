@@ -17,7 +17,7 @@ private:
 public:
     
     //Constructor
-   Server();
+   //Server();
    ~Server(){
     stopServer();
    }
