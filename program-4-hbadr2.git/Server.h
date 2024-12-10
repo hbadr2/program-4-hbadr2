@@ -17,10 +17,9 @@ private:
 public:
     
     //Constructor
-   //Server();
-   ~Server(){
-    stopServer();
-   }
+   Server();
+   
+   ~Server();
 
     int getServer();
 

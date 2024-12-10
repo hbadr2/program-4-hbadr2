@@ -1,4 +1,8 @@
 #include "Server.h"
+#include <iostream>
+
+using namespace std;
+
 int s;
 
 Server::Server() {
@@ -6,7 +10,7 @@ Server::Server() {
 }
 
 Server::~Server() {
-    //stopServer();
+    stopServer();
 }
 
 int Server::getServer() {
@@ -14,17 +18,23 @@ int Server::getServer() {
     return s;
 }
 
-void Server::setServer(int s) {
-    server = s;
+void Server::setServer(int serverState) {
+    s = serverState;
 }
 
 bool Server::startServer(int port) {
     cout << "Server started on port " << port << endl;
+    s = 1;
     return true;
 }
 
 void Server::stopServer() {
-    cout << "Server stopped." << endl;
+    if (s == 1) {
+        cout << "Server stopped." << endl;
+        s = -1;
+    } else {
+        cout << "Server is already stopped." << endl;
+    }
 }
 
 void Server::run() {

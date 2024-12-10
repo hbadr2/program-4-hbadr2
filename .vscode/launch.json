@@ -1,0 +1,17 @@
+{
+    "version": "0.2.0",
+    "configurations": [    
+        {
+            "name": "C++ Debug",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "/Users/hanab/Projects/program-4-hbadr2.git/program-4-hbadr2.git/main.cpp",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "lldb"
+        }
+    ]
+}
