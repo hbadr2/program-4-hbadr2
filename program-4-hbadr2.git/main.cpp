@@ -7,7 +7,7 @@ using namespace std;
 
 void displayMainMenu() {
     cout << "\nWelcome to the client-server chat application!" << endl;
-    cout << "1. Connect to the Server" << endl;
+    cout << "\n1. Connect to the Server" << endl;
     cout << "2. Send a message" << endl;
     cout << "3. Exit" << endl;
     cout << "\nChoose an option (enter either 1, 2, or 3): "<< endl;
@@ -51,7 +51,7 @@ int  main() {
         } else if (choice == "3") {
 
             //exit program
-            cout << "Thank you for using the chat room!" << endl;
+            cout << "/nThank you for using the chat room!" << endl;
             isRunning = false;
         
         } else {
