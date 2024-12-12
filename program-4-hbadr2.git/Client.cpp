@@ -1,9 +1,5 @@
 ﻿#include "Client.h"
 
-Client::~Client() {
-    //empty destructor
-}
-
 Client::Client() {
     clientSocket = -1;
 }
@@ -36,25 +32,32 @@ bool Client::connectToServer(const string& serverIp, int port) {
         cout << "Error creating socket" << endl;
         return false;
     }
+
+    sockaddr_in serverAddr;
+    serverAddr.sin_family = AF_INET;
+    serverAddr.sin_port = htons(port);
+    serverAddr.sin_addr.s_addr = inet_addr(serverIp.s_str());
+
+    if (connect (clientSocket, (struct sockaddr*)&serverAddr, sizeof(serverAddr)) < 0) {
+        cout << "Error connecting to server" << endl;
+        return false;
+    }
+
+    send(clientSocket, name.c_str(), name.size(), 0);
+
+    thread(&Client::receiveMessages, this).detach();
+    cout << "Connected to server!" << endl;
+    return true;
 }
 
-sockaddr_in serverAddr;
-serverAddr.sin_family = AF_INET;
-serverAddr.sin_port = htons(port);
-serverAddr.sin_addr.s_addr = inet_addr(serverIp.s_str());
 
-if (connect (clientSocket, (struct sockaddr*)&serverAddr, sizeof(serverAddr)) < 0) {
-    cout << "Error connecting to server" << endl;
-    return false;
-}
-
+//////
 cout << "Connected to server!" << endl;
 thread(&Client::receiveMessages, this).detach();
 return true;
 
 void Client::sendMessage(const string& message) {
-    string fullMessage = name + ": " + message;
-    send(clientSocket, fullMessage.c_str(), fullMessage.size(), 0);
+    send(clientSocket, message.c_str(), message.size(), 0);
 }
 
 void Client::receiveMessages() {
