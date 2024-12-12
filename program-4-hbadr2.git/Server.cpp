@@ -1,21 +1,22 @@
-#include "Server.h"
-#include <iostream>
-
+#include "server.h"
+#include <cstring>
 using namespace std;
 
-int s;
-
-Server::Server() : serverSocket(-1), isRunning(false) {}
+Server::Server() {
+    serverSocket = -1;
+    isRunning = false;
+}
 
 Server::~Server() {
     stopServer();
 }
 
+/*
 int Server::getServer() {
     int s;
     return s;
 }
-
+*/
 void Server::setServer(int serverState) {
     s = serverState;
 }
@@ -28,6 +29,7 @@ bool Server::startServer(int port) {
     }
 
     sockaddr_in serverAddr;
+    memset(&serverAddr, 0, sizeof(serverAddr);)
     serverAddr.sin_family = AF_INET;
     serverAddr.sin_addr.s_addr = INADDR_ANY;
     serverAddr.sin_port = htons(port);
@@ -43,14 +45,21 @@ bool Server::startServer(int port) {
     }
 
     isRunning = true;
-    cout << "Server started on port " << port << endl;
+    cout <<  getCurrentTimeStamp() << " Server started on port " << port << endl;
+    
+    thread acceptThread(&Server::acceptConnections, this);
+    acceptThread.detach();
+
     return true;
 }
 
 void Server::stopServer() {
     isRunning = false;
-    close(serverSocket);
-    cout << "Server stopped." << endl;
+    if (serverSocket >= 0) {
+        close(serverSocket);
+        serverSocket = -1;
+    }
+    cout << getCurrentTimeStamp() << "Server stopped." << endl;
 }
 
 void Server::run() {
@@ -62,17 +71,23 @@ void Server::acceptConnections() {
         sockaddr_in clientAddr;
         socklen_t clientLen =  sizeof(clientAddr);
         int clientSocket =  accept(serverSocket, (struct sockaddr*)&clientAddr, &clientLen);
+        
         if (clientSocket < 0) {
-            cout << "Error accepting connection" << endl;
+            if (isRunning) {
+                cout << "Error accepting connection" << endl;
+            }
             continue;
         }
 
         {
             lock_guard<mutex> lock(clientMutex);
-            clients.push_back(clientSocket);
+            clientsWaiting.push_back(slientSocket);
         }
-        thread(&Server::handleClient, this, clientSocket).detach();
-        cout << "A new client has joined!" << endl;
+        
+        cout << getCurrentTimeStamp() << " Client connected: " << clientSocket << endl;
+        
+        thread clientThread(&Server::handleClient, this, clientSocket);
+        clientThread.detach();
     }
 }
 
@@ -85,61 +100,50 @@ void Server::broadcastMessage(const string& message, int senderSocket) {
     }
 }
 
-void Server::handleDisconnection(int s) {
-    //something
-}
-
 void Server::handleClient(int clientSocket) {
     char buffer[1024];
-    memset(buffer, 0, sizeof(buffer));
+    string clientName;
 
-    recv(clientSocket, buffer, sizeof(buffer), 0);
-    string clientName(buffer);
+    int bytesReceived = recv(clientSocket, buffer, sizeof(buffer), 0);
+    if (bytesReceived > 0) {
+        clientName = string(buffer, bytesReceived);
+        {
+            lock_guard<mutex> lock(clientMutex);
+            clientNames[clientSocket] = clientName;
+            clients.push_back(clientSocket);
+        }
 
-    {
-        lock_guard<mutex> lock(clientMutex);
-        clientNames[clientSocket] = name;
+        cout << getCurrentTimeStamp() << " Client registered: " << clientName << endl;
+    } else {
+        close(clientSocket);
+        return;
     }
-
-    broadcastMessage(name + " has joined the chat!", clientSocket);
-
+    
     while (isRunning) {
         memset(buffer, 0, sizeof(buffer));
-        int bytesReceived = recv(clientSocket, buffer, sizeof(buffer), 0);
+        bytesReceived = recv(clientSocket, buffer, sizeof(buffer), 0);
+        
         if (bytesReceived <= 0) {
-            cout << clientName << "disconnected." << endl;
-            close(clientSocket);
-
+            cout << getCurrentTimeStamp() << " Client disconnected." << clientName << endl;
             {
                 lock_guard<mutex> lock(clientMutex);
                 clients.erase(remove(clients.begin(), clients.end(), clientSocket), clients.end());
                 clientNames.erase(clientSocket);
             }
-            broadcastMessage(clientName + " has left the chat.", clientSocket);
-            break;
-        }
-        string message(buffer);
-        if (message == "exit") {
-            broadcastMessage(clientName + " has left the chat", clientSocket);
             close(clientSocket);
-
-            {
-                lock_guard<mutex> lock(clientMutex);
-                clients.erase(remove(clients.begin(), clients.end(), clientSocket), clients.end());
-                clientNames.erase(clientSocket);
-            }
             break;
         }
-        string timeStampedMessage = getCurrentTimeStamp() + message;
-        cout << timeStampedMessage << endl;
-        broadcastMessage(timeStampedMessage, clientSocket);
+        
+        string message =  clientName + ": " + string(buffer, bytesReceived);
+        cout << message << endl;
+        broadcastMessage(message, clientSocket);
     }
 }
 
 string Server::getCurrentTimeStamp() {
     time_t now = time(0);
-    tm* localtm = localtime(&now);
+    tm* localTime = localtime(&now);
     char buffer[80];
-    strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", localtm);
+    strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", localTime);
     return string(buffer);
 }

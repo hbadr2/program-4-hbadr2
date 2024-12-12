@@ -1,6 +1,7 @@
 ﻿#include "Client.h"
-
 #include <iostream>
+#include <cstring>
+
 using namespace std;
 
 Client::Client() {
@@ -37,9 +38,14 @@ bool Client::connectToServer(const string& serverIp, int port) {
     }
 
     sockaddr_in serverAddr;
+    memset(&serverAddr, 0, sizeof(serverAddr));
     serverAddr.sin_family = AF_INET;
     serverAddr.sin_port = htons(port);
-    serverAddr.sin_addr.s_addr = inet_addr(serverIp.cthrea_str());
+
+    if (inet_pton(AF_INET, serverIp.c_str(), &serverAddr.sin_addr) <= 0) {
+        cout << "Invalid server IP address" << endl;
+        return false;
+    }
 
     if (connect (clientSocket, (struct sockaddr*)&serverAddr, sizeof(serverAddr)) < 0) {
         cout << "Error connecting to server" << endl;
@@ -48,16 +54,11 @@ bool Client::connectToServer(const string& serverIp, int port) {
 
     send(clientSocket, name.c_str(), name.size(), 0);
 
-    thread(&Client::receiveMessages, this).detach();
+    thread t(&Client::receiveMessages, this);
+    t.detach();
     cout << "Connected to server!" << endl;
     return true;
 }
-
-
-//////
-cout << "Connected to server!" << endl;
-thread([this]() {this->receiveMessages();}).detach();
-return true;
 
 void Client::sendMessage(const string& message) {
     send(clientSocket, message.c_str(), message.size(), 0);

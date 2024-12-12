@@ -2,6 +2,7 @@
 #include "Client.h"
 #include <iostream>
 #include <string>
+#include <thread>
 
 using namespace std;
 
@@ -18,24 +19,24 @@ int  main() {
 
     Server server;
 
-    thread serverThread([&server]() { acceptConnections(); });
-
     if (!server.startServer(80)) {
+        cerr << "Failed to start the server. Exiting ..." << endl;
         return -1;
     }
 
-    Client client1;
-    Client client2;
+    thread serverThread(&Server::acceptConnections, &server);
 
-    
+    Client client;
+    string name, choice, message;
+    bool isRunning = true;
 
     server.startServer(80);
-
+/*
     string choice;
     bool isRunning = true;
     string name;
     string message;
-
+*/
     while (isRunning) {
         displayMainMenu();
         cin >> choice;
@@ -46,17 +47,22 @@ int  main() {
             cout << "\nEnter your name: ";
             cin >> name;
             client.setName(name);
-            client.connectToServer("128.0.0.1", 80);
-            cout << "You are now connected as " << name << "." << endl;
+            if (client.connectToServer("128.0.0.1", 80)) {
+                 cout << "You are now connected as " << name << "." << endl;
+            } else {
+                cout << "Failed to connect to the server. Please try again." << endl;
+            }
         
         } else if (choice == "2") {
-            
             //send a message
+            if (name.empty()){
+                cout << "You must connect to the server first!" << endl;
+                continue;
+            }
             cout << "\nEnter your message: ";
             cin.ignore();
             getline(cin, message);
             client.sendMessage(message);
-            server.broadcastMessage(name + ": " + message, 0);
         
         } else if (choice == "3") {
 
@@ -68,17 +74,10 @@ int  main() {
             cout << "Please try again and enter a valid choice. " << endl;
         }
     }
-    //server.stopServer();
+    
+    server.stopServer();
+    if (serverThread.joinable()) {
+        serverThread.join();
+    }
     return 0;
-
-    /*
-    client.connectToServer("127.0.0.1", 80);
-
-    client.setName("John Smith");
-    client.sendMessage("Hello, everyone :)");
-
-    server.broadcastMessage("John Smith: Hello everyone :) ", 0);
-
-    return 0;
-    */
 }
