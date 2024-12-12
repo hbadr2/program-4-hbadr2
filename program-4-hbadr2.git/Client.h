@@ -12,6 +12,7 @@ using namespace std;
 class Client {
 private:
 	int clientSocket;
+	int awaitingClient;
 	string name;
 
 	void receiveMessages();

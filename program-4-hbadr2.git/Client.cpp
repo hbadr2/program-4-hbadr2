@@ -1,5 +1,8 @@
 ﻿#include "Client.h"
 
+#include <iostream>
+using namespace std;
+
 Client::Client() {
     clientSocket = -1;
 }
@@ -36,7 +39,7 @@ bool Client::connectToServer(const string& serverIp, int port) {
     sockaddr_in serverAddr;
     serverAddr.sin_family = AF_INET;
     serverAddr.sin_port = htons(port);
-    serverAddr.sin_addr.s_addr = inet_addr(serverIp.s_str());
+    serverAddr.sin_addr.s_addr = inet_addr(serverIp.cthrea_str());
 
     if (connect (clientSocket, (struct sockaddr*)&serverAddr, sizeof(serverAddr)) < 0) {
         cout << "Error connecting to server" << endl;
@@ -53,7 +56,7 @@ bool Client::connectToServer(const string& serverIp, int port) {
 
 //////
 cout << "Connected to server!" << endl;
-thread(&Client::receiveMessages, this).detach();
+thread([this]() {this->receiveMessages();}).detach();
 return true;
 
 void Client::sendMessage(const string& message) {

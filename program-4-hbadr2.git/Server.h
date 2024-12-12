@@ -17,6 +17,7 @@ class Server {
 private:
     int serverSocket;
     vector<int> clientsWaiting;
+    vector<int> clients;
     map<int, string> clientNames;
     mutex clientMutex;
     bool isRunning;

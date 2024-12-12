@@ -18,7 +18,7 @@ int  main() {
 
     Server server;
 
-    thread serverThread(&Server::acceptConnections, &server);
+    thread serverThread([&server]() { acceptConnections(); });
 
     if (!server.startServer(80)) {
         return -1;
@@ -27,7 +27,7 @@ int  main() {
     Client client1;
     Client client2;
 
-    //client1.
+    
 
     server.startServer(80);
 

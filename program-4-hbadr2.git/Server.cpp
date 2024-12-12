@@ -98,7 +98,7 @@ void Server::handleClient(int clientSocket) {
 
     {
         lock_guard<mutex> lock(clientMutex);
-        clientNames[clientSocket] = name;;
+        clientNames[clientSocket] = name;
     }
 
     broadcastMessage(name + " has joined the chat!", clientSocket);
@@ -136,7 +136,7 @@ void Server::handleClient(int clientSocket) {
     }
 }
 
-string Server::gteCurrentTimeStamp() {
+string Server::getCurrentTimeStamp() {
     time_t now = time(0);
     tm* localtm = localtime(&now);
     char buffer[80];
