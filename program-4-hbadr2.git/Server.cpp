@@ -59,8 +59,8 @@ void Server::run() {
         exit(1);
     }
     
-    int bindResult = bind(serverSocket, (struct sockaddr*)&serverAddr, sizeof(serverAddr));
-    if (bindResult < 0){
+    //int bindResult = bind(serverSocket, (struct sockaddr*)&serverAddr, sizeof(serverAddr));
+    if (::bind(serverSocket, (struct sockaddr*)&serverAddr, sizeod(serverAddr)) < 0) {
         cout << "Error binding socket." << endl;
         exit(1);
     }
@@ -85,7 +85,7 @@ bool Server::startServer(int port) {
     serverAddr.sin_addr.s_addr = INADDR_ANY;
     serverAddr.sin_port = htons(port);
 
-    if (bind(serverSocket, (struct sockaddr*)&serverAddr, sizeof(serverAddr)) < 0) {
+    if (::bind(serverSocket, (struct sockaddr*)&serverAddr, sizeof(serverAddr)) < 0) {
         cout << "Error binding socket" << endl;
         return false;
     }
