@@ -7,12 +7,13 @@
 
 using namespace std;
 
+/*
 int serverSocket;
 struct sockaddr_in serverAddr;
-
+*/
 Server::Server() {
     serverSocket = -1;
-    serverState = 0;
+    //serverState = 0;
     isRunning = false;
 }
 
@@ -50,10 +51,13 @@ void Server::run() {
         cout << "Error binding socket." << endl;
         exit(1);
     }
+    
     int bindResult =  bind(serverSocket, (struct sockaddr*)&serverAddr, sizeof(serverAddr));
     if (bindResult < 0){
         cout << "Error binding socket." << endl;
+        exit(1);
     }
+
     listen(serverSocket, 5);
     cout << "Server is running ..." << endl;
 }
@@ -84,7 +88,7 @@ bool Server::startServer(int port) {
     isRunning = true;
     cout <<  getCurrentTimeStamp() << " Server started on port " << port << endl;
     
-    thread acceptThread([this]() { this->acceptConnections(); });
+    thread acceptThread(&Server::acceptConnections, this);
     //thread clientThread([this, clientSocket]() { this->handleClient(clientSocket); });
     acceptThread.detach();
 
