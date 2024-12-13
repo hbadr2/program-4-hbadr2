@@ -1,4 +1,5 @@
 ﻿#include "Client.h"
+#include <arpa/inet.h>
 #include <iostream>
 #include <cstring>
 
