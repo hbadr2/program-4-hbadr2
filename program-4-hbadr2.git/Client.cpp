@@ -55,7 +55,7 @@ bool Client::connectToServer(const string& serverIp, int port) {
 
     send(clientSocket, name.c_str(), name.size(), 0);
 
-    thread t(&Client::receiveMessages, this);
+    thread t(std::bind(&Client::receiveMessages, this));
     t.detach();
     cout << "Connected to server!" << endl;
     return true;
