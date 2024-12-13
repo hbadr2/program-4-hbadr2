@@ -60,7 +60,7 @@ void Server::run() {
     }
     
     //int bindResult = bind(serverSocket, (struct sockaddr*)&serverAddr, sizeof(serverAddr));
-    if (::bind(serverSocket, (struct sockaddr*)&serverAddr, sizeod(serverAddr)) < 0) {
+    if (::bind(serverSocket, (struct sockaddr*)&serverAddr, sizeof(serverAddr)) < 0) {
         cout << "Error binding socket." << endl;
         exit(1);
     }
