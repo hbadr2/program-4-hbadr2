@@ -119,7 +119,7 @@ void Server::acceptConnections() {
 
         {
             lock_guard<mutex> lock(clientMutex);
-            clientsWaiting.push_back(clientSocket);
+            clients.push_back(clientSocket);
         }
         
         cout << getCurrentTimeStamp() << " Client connected: " << clientSocket << endl;
