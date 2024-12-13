@@ -61,7 +61,8 @@ bool Server::startServer(int port) {
     cout <<  getCurrentTimeStamp() << " Server started on port " << port << endl;
     
     thread acceptThread([this]() { this->acceptConnections(); });
-    thread clientThread([this, clientSocket]() { this->handleClient(clientSocket); });
+    //thread clientThread([this, clientSocket]() { this->handleClient(clientSocket); });
+    acceptThread.detach();
 
     return true;
 }
@@ -110,7 +111,7 @@ void Server::handleClient(int clientSocket) {
         {
             lock_guard<mutex> lock(clientMutex);
             clientNames[clientSocket] = clientName;
-            clientsWaiting.push_back(clientSocket);
+            clients.push_back(clientSocket);
         }
 
         cout << getCurrentTimeStamp() << " Client registered: " << clientName << endl;
