@@ -16,6 +16,7 @@ using namespace std;
 class Server {
 private:
     int serverSocket;
+    int serverState;
     vector<int> clientsWaiting;
     vector<int> clients;
     map<int, string> clientNames;
@@ -38,7 +39,7 @@ public:
 
     void run();
 
-    void tions();
+    void acceptConnections();
 
     void broadcastMessage(const string& message, int senderSocket);
 
