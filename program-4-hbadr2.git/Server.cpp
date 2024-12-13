@@ -21,6 +21,19 @@ void Server::setServer(int serverState) {
     s = serverState;
 }
 
+void Server::stopServer() {
+    isRunning = false;
+    if (serverSocket >= 0) {
+        close(serverSocket);
+        serverSocket = -1;
+    }
+    cout << getCurrentTimeStamp() << "Server stopped." << endl;
+}
+
+void Server::run() {
+    cout << getCurrentTimeStamp() << "Server is running ..." << endl;
+}
+
 bool Server::startServer(int port) {
     serverSocket = socket(AF_INET, SOCK_STREAM, 0);
     if (serverSocket < 0) {
@@ -29,7 +42,7 @@ bool Server::startServer(int port) {
     }
 
     sockaddr_in serverAddr;
-    memset(&serverAddr, 0, sizeof(serverAddr);)
+    memset(&serverAddr, 0, sizeof(serverAddr));
     serverAddr.sin_family = AF_INET;
     serverAddr.sin_addr.s_addr = INADDR_ANY;
     serverAddr.sin_port = htons(port);
@@ -47,23 +60,10 @@ bool Server::startServer(int port) {
     isRunning = true;
     cout <<  getCurrentTimeStamp() << " Server started on port " << port << endl;
     
-    thread acceptThread(&Server::acceptConnections, this);
-    acceptThread.detach();
+    thread acceptThread([this]() { this->acceptConnections(); });
+    thread clientThread([this, clientSocket]() { this->handleClient(clientSocket); });
 
     return true;
-}
-
-void Server::stopServer() {
-    isRunning = false;
-    if (serverSocket >= 0) {
-        close(serverSocket);
-        serverSocket = -1;
-    }
-    cout << getCurrentTimeStamp() << "Server stopped." << endl;
-}
-
-void Server::run() {
-    cout << "Server is running ..." << endl;
 }
 
 void Server::acceptConnections() {
@@ -81,7 +81,7 @@ void Server::acceptConnections() {
 
         {
             lock_guard<mutex> lock(clientMutex);
-            clientsWaiting.push_back(slientSocket);
+            clientsWaiting.push_back(clientSocket);
         }
         
         cout << getCurrentTimeStamp() << " Client connected: " << clientSocket << endl;
@@ -110,7 +110,7 @@ void Server::handleClient(int clientSocket) {
         {
             lock_guard<mutex> lock(clientMutex);
             clientNames[clientSocket] = clientName;
-            clients.push_back(clientSocket);
+            clientsWaiting.push_back(clientSocket);
         }
 
         cout << getCurrentTimeStamp() << " Client registered: " << clientName << endl;
@@ -143,7 +143,7 @@ void Server::handleClient(int clientSocket) {
 string Server::getCurrentTimeStamp() {
     time_t now = time(0);
     tm* localTime = localtime(&now);
-    char buffer[80];
+    char buffer[8080];
     strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", localTime);
     return string(buffer);
 }
