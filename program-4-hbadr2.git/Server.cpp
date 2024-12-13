@@ -1,4 +1,5 @@
 #include "Server.h"
+#include <iostream>
 #include <cstring>
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -40,10 +41,18 @@ void Server::stopServer() {
 
 void Server::run() {
     sockaddr_in serverAddr;
+    serverAddr.sin_family = AF_INET;
+    serverAddr.sin_addr.s_addr = INADDR_ANY;
+    serverAddr.sin_port = htons(8080);
+
     serverSocket =  socket(AF_INET, SOCK_STREAM, 0);
     if  (serverSocket < 0) {
         cout << "Error binding socket." << endl;
         exit(1);
+    }
+    int bindResult =  bind(serverSocket, (struct sockaddr*)&serverAddr, sizeof(serverAddr));
+    if (bindResult < 0){
+        cout << "Error binding socket." << endl;
     }
     listen(serverSocket, 5);
     cout << "Server is running ..." << endl;
