@@ -4,6 +4,13 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include <unistd.h>
+#include <thread>
+#include <mutex>
+#include <vector>
+#include <string>
+#include <algorithm>
+#include <ctime>
 
 using namespace std;
 
@@ -48,11 +55,11 @@ void Server::run() {
 
     serverSocket =  socket(AF_INET, SOCK_STREAM, 0);
     if  (serverSocket < 0) {
-        cout << "Error binding socket." << endl;
+        cout << "Error creating socket." << endl;
         exit(1);
     }
     
-    int bindResult =  bind(serverSocket, (struct sockaddr*)&serverAddr, sizeof(serverAddr));
+    int bindResult = bind(serverSocket, (struct sockaddr*)&serverAddr, sizeof(serverAddr));
     if (bindResult < 0){
         cout << "Error binding socket." << endl;
         exit(1);
@@ -60,6 +67,9 @@ void Server::run() {
 
     listen(serverSocket, 5);
     cout << "Server is running ..." << endl;
+
+    thread acceptThread(&Server::acceptConnections, this);
+    acceptThread.detach();
 }
 
 bool Server::startServer(int port) {
@@ -89,7 +99,6 @@ bool Server::startServer(int port) {
     cout <<  getCurrentTimeStamp() << " Server started on port " << port << endl;
     
     thread acceptThread(&Server::acceptConnections, this);
-    //thread clientThread([this, clientSocket]() { this->handleClient(clientSocket); });
     acceptThread.detach();
 
     return true;
