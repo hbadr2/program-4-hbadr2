@@ -16,6 +16,7 @@ using namespace std;
 class Server {
 private:
     int serverSocket;
+    int serverState;
     vector<int> clientsWaiting;
     vector<int> clients;
     map<int, string> clientNames;
@@ -23,6 +24,7 @@ private:
     bool isRunning;
 
     string getCurrentTimeStamp();
+    int s;
 
 public:
     
@@ -31,15 +33,13 @@ public:
    
    ~Server();
 
-    //int getServer();
-
-    //void setServer(int s);
+    void setServer(int serverState);
 
     bool startServer(int port);
 
     void stopServer();
 
-    //void run();
+    void run();
 
     void acceptConnections();
 

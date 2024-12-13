@@ -1,9 +1,17 @@
-#include "server.h"
+#include "Server.h"
 #include <cstring>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+
 using namespace std;
+
+int serverSocket;
+struct sockaddr_in serverAddr;
 
 Server::Server() {
     serverSocket = -1;
+    serverState = 0;
     isRunning = false;
 }
 
@@ -18,7 +26,7 @@ int Server::getServer() {
 }
 */
 void Server::setServer(int serverState) {
-    s = serverState;
+    this->serverState = serverState;
 }
 
 void Server::stopServer() {
@@ -31,7 +39,14 @@ void Server::stopServer() {
 }
 
 void Server::run() {
-    cout << getCurrentTimeStamp() << "Server is running ..." << endl;
+    sockaddr_in serverAddr;
+    serverSocket =  socket(AF_INET, SOCK_STREAM, 0);
+    if  (serverSocket < 0) {
+        cout << "Error binding socket." << endl;
+        exit(1);
+    }
+    listen(serverSocket, 5);
+    cout << "Server is running ..." << endl;
 }
 
 bool Server::startServer(int port) {
